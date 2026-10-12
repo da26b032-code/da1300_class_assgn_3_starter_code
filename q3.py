@@ -23,8 +23,27 @@ def count_fair_managers(root: Optional[TreeNode]) -> int:
     Returns:
         Number of fair managers in the tree.
     """
-    pass
+    fair_managers = 0
 
+    def post_order(node):
+        nonlocal fair_managers
+
+        if not node:
+            return 0, 0
+
+        left_sum, left_count = post_order(node.left)
+        right_sum, right_count = post_order(node.right)
+
+        total_sum = left_sum + right_sum + node.salary
+        total_count = left_count +right_count + 1
+
+        if total_sum // total_count == node.salary:
+            fair_managers += 1
+
+        return total_sum, total_count
+
+    post_order(root)
+    return fair_managers
 
 if __name__ == "__main__":
     # Example sanity check (see test.py for the real test cases)
