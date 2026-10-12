@@ -1,5 +1,5 @@
 from typing import List
-
+from collections import deque
 
 def printer_queue_order(pages: List[int]) -> List[int]:
     """
@@ -16,7 +16,22 @@ def printer_queue_order(pages: List[int]) -> List[int]:
     Returns:
         List of document numbers in the order they finish printing.
     """
-    pass
+    queue = deque(range(len(pages)))
+    remaining =pages[:]
+    result = [] 
+
+    while queue:
+        current = queue.popleft()
+        remaining[current] -= 1
+
+        if remaining[current] == 0:
+            result.append(current)
+        else:
+            queue.append(current)
+
+    return result
+
+
 
 
 if __name__ == "__main__":
